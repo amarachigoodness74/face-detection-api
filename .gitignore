@@ -1,0 +1,6 @@
+logs 
+node_modules 
+.env 
+apitest.rest 
+dump.rdb 
+dist 
