@@ -1,6 +1,10 @@
 import { Router, Request, Response } from "express";
 import User from "../models/user.model";
-import { signinValidation, signupValidation, validate } from "../validations/auth.validations";
+import {
+  signinValidation,
+  signupValidation,
+  validate,
+} from "../validations/auth.validations";
 
 const router = Router();
 
@@ -19,12 +23,15 @@ router.post(
         res.status(400).json({ message: "User already exists." });
       }
 
-      const user = new User({ name, email, password });
-      await user.save();
+      const newUser = new User({ name, email, password });
+      const savedUser = await newUser.save();
+      const {
+        _id,
+        password: _,
+        ...userWithoutSensitiveData
+      } = savedUser.toObject();
 
-      res
-        .status(201)
-        .json({ message: "User registered successfully.", userId: user._id });
+      res.status(201).json(userWithoutSensitiveData);
     } catch (error: any) {
       res.status(500).json({ error: error.message });
     }
@@ -55,9 +62,13 @@ router.post(
           res.status(401).json({ message: "Invalid credentials." });
         }
 
-        res
-          .status(200)
-          .json({ message: "Login successful.", userId: user._id });
+        const {
+          _id,
+          password: _,
+          ...userWithoutSensitiveData
+        } = user.toObject();
+
+        res.status(201).json(userWithoutSensitiveData);
       }
     } catch (error: any) {
       res.status(500).json({ error: error.message });

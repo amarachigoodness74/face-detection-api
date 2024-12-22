@@ -9,6 +9,7 @@ import connectDB from "./config/database";
 import logger from "./utils/logger";
 
 const app: Express = express();
+app.use(express.json());
 app.use(cors());
 
 const port = config.get("environment.port") as number;
@@ -18,8 +19,8 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 // Routes
-app.use("/api/auth", authRoute);
-app.use("/api/users", userRoutes);
+app.use("/auth", authRoute);
+app.use("/users", userRoutes);
 
 // catch 404 and forward to error handler
 app.use((req: Request, res: Response, next: NextFunction) => {

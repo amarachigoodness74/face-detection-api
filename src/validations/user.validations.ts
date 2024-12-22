@@ -2,7 +2,7 @@ import { body, validationResult } from "express-validator";
 import { Request, Response, NextFunction } from "express";
 
 export const imageValidation = () => [
-  body("id").not().isEmpty().trim().escape(),
+  body("email").not().isEmpty().trim().escape(),
   body("image").not().isEmpty().trim().escape(),
 ];
 
